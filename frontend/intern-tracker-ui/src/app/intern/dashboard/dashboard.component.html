@@ -1,0 +1,266 @@
+<div class="flex h-screen bg-gray-50 font-sans text-gray-900">
+  <!-- Sidebar -->
+  <!-- Sidebar -->
+  <aside class="hidden md:flex flex-col w-56 bg-slate-900 text-white shadow-xl transition-all duration-300">
+    <div class="flex items-center justify-center h-16 border-b border-slate-800 bg-slate-950">
+      <img src="assets/logo.png" alt="Logo" class="h-10 max-w-[180px] object-contain opacity-90 hover:opacity-100 transition-opacity">
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4">
+      <ul class="space-y-1 px-3">
+        <li>
+          <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-slate-800 text-white transition-colors shadow-lg shadow-black/20 text-sm border border-slate-700 group cursor-default">
+            <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            <span class="font-medium tracking-wide">Dashboard</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="p-3 border-t border-slate-800 bg-slate-950">
+      <button (click)="logout()" class="flex items-center gap-2 w-full px-3 py-2 text-slate-400 hover:text-white transition-colors rounded hover:bg-slate-800 text-sm group">
+        <svg class="w-4 h-4 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="bg-white shadow-sm h-16 flex items-center justify-end px-6 border-b border-gray-200">
+      <div class="flex items-center gap-3">
+        <span class="text-sm text-gray-600">Logged in as <span class="font-semibold text-gray-800">{{ user?.username }}</span></span>
+        <div class="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-brand-600/20">
+           {{ user?.username?.charAt(0) | uppercase }}
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Scroll -->
+    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+      
+      <div class="flex flex-col gap-6 max-w-5xl mx-auto">
+        
+        <!-- Pending Assignments Panel -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-50 bg-white flex justify-between items-center">
+              <h3 class="text-lg font-bold text-gray-800 tracking-tight">Pending Assignments</h3>
+              <span class="bg-brand-50 text-brand-700 text-xs font-bold px-3 py-1 rounded-full">{{ activeAssignmentCount }} Active</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-100">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">File</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr *ngFor="let assign of assignments" class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ assign.fileName }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">{{ assign.assignedDate | date:'mediumDate' }}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full" 
+                                    [ngClass]="{'bg-yellow-100 text-yellow-800': assign.status !== 'Completed', 'bg-green-100 text-green-800': assign.status === 'Completed'}">
+                                    {{ assign.status || 'Pending' }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right flex gap-3 justify-end">
+                                <button (click)="downloadAssignment(assign.assignmentId, assign.fileName)" class="text-brand-600 hover:text-brand-800 text-sm font-medium transition-colors">
+                                    Download
+                                </button>
+                                <button *ngIf="assign.status !== 'Completed'" (click)="markAsCompleted(assign.assignmentId)" class="text-green-600 hover:text-green-800 text-sm font-medium transition-colors">
+                                    Mark Done
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="assignments.length === 0">
+                            <td colspan="4" class="px-6 py-12 text-center text-gray-400">
+                                <p>No pending assignments at the moment.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Product Report Accordion -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
+            <button (click)="toggleReportForm()" class="w-full px-6 py-5 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors focus:outline-none">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-brand-50 rounded-lg text-brand-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <div class="text-left">
+                        <h3 class="text-lg font-bold text-gray-800">Product Report</h3>
+                        <p class="text-sm text-gray-500">Submit new product data or edit existing entries</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 transform transition-transform duration-300" [class.rotate-180]="isReportFormOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            
+            <div *ngIf="isReportFormOpen" class="border-t border-gray-100 bg-gray-50/30 p-8 animate-fade-in-down">
+                <div class="max-w-3xl mx-auto">
+                    <div class="flex justify-between items-center mb-6" *ngIf="editingReportId">
+                        <span class="text-sm font-semibold text-brand-600 bg-brand-50 px-3 py-1 rounded-full">Editing Report #{{ editingReportId }}</span>
+                        <button (click)="cancelEdit()" class="text-sm text-red-600 hover:text-red-800 font-medium">Cancel Edit</button>
+                    </div>
+
+                    <form [formGroup]="reportForm" (ngSubmit)="onSubmitReport()" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Assignment Select -->
+                            <div class="col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Source Assignment</label>
+                                <select formControlName="assignmentId" class="block w-full px-4 py-3 text-base border-gray-200 rounded-lg focus:ring-brand-500 focus:border-brand-500 bg-white shadow-sm transition-all hover:border-gray-300">
+                                    <option [ngValue]="null" disabled>Select source Excel file...</option>
+                                    <option *ngFor="let assign of assignments" [value]="assign.assignmentId">{{ assign.fileName }}</option>
+                                </select>
+                            </div>
+
+                            <!-- Product Details -->
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
+                                <input formControlName="productName" type="text" placeholder="e.g. Wireless Mouse" class="block w-full px-4 py-3 text-base border-gray-200 rounded-lg focus:ring-brand-500 focus:border-brand-500 bg-white shadow-sm transition-all hover:border-gray-300">
+                                <div *ngIf="reportForm.get('productName')?.errors?.['pattern'] && reportForm.get('productName')?.touched" class="text-red-500 text-xs mt-1 font-medium">
+                                    Product name must contain only letters, numbers, and spaces (no special characters).
+                                </div>
+                            </div>
+
+                            <!-- Stats -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Images Collected</label>
+                                <input formControlName="imagesCollected" type="number" min="0" class="block w-full px-4 py-3 text-base border-gray-200 rounded-lg focus:ring-brand-500 focus:border-brand-500 bg-white shadow-sm transition-all hover:border-gray-300">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Image Quality</label>
+                                <select formControlName="imageQuality" class="block w-full px-4 py-3 text-base border-gray-200 rounded-lg focus:ring-brand-500 focus:border-brand-500 bg-white shadow-sm transition-all hover:border-gray-300">
+                                    <option value="High">High Resolution</option>
+                                    <option value="Medium">Medium Resolution</option>
+                                    <option value="Low">Low Resolution</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Checkbox -->
+                        <div class="flex items-center gap-3 p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
+                             <input formControlName="videoCollected" type="checkbox" id="videoCheck" class="h-5 w-5 text-brand-600 focus:ring-brand-500 border-gray-300 rounded transition-all">
+                             <label for="videoCheck" class="text-sm font-medium text-gray-700 cursor-pointer">Video footage collected for this product</label>
+                        </div>
+
+                        <!-- Remarks -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Remarks / Notes</label>
+                            <textarea formControlName="remarks" rows="3" placeholder="Any specific details or issues encountered..." class="block w-full px-4 py-3 text-base border-gray-200 rounded-lg focus:ring-brand-500 focus:border-brand-500 bg-white shadow-sm transition-all hover:border-gray-300"></textarea>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="pt-4">
+                            <button type="submit" [disabled]="!reportForm.valid" 
+                                class="w-full py-3.5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-[0.98]">
+                                {{ editingReportId ? 'Update Report' : 'Submit Product Report' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submission History Accordion -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
+            <button (click)="toggleHistory()" class="w-full px-6 py-5 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors focus:outline-none">
+                 <div class="flex items-center gap-3">
+                    <div class="p-2 bg-green-100 rounded-lg text-green-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div class="text-left">
+                        <h3 class="text-lg font-bold text-gray-800">Submission History</h3>
+                        <p class="text-sm text-gray-500">View status of previously submitted reports</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 transform transition-transform duration-300" [class.rotate-180]="isHistoryOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            
+            <div *ngIf="isHistoryOpen" class="border-t border-gray-100 animate-fade-in-down">
+                <!-- Filter Controls -->
+                <div class="p-4 bg-gray-50 border-b border-gray-100 flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <label for="historyDate" class="text-sm font-medium text-gray-700">Filter by Date:</label>
+                        <input type="date" id="historyDate" [(ngModel)]="selectedDate" class="px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500 bg-white">
+                    </div>
+                    <button *ngIf="selectedDate" (click)="selectedDate = ''" class="text-sm text-brand-600 hover:text-brand-800 font-medium hover:underline">
+                        Clear Filter
+                    </button>
+                    <div *ngIf="selectedDate" class="ml-auto text-xs text-gray-500 italic">
+                        Showing reports for {{ selectedDate | date:'mediumDate' }} (Sorted by ID)
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-100">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Product</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Assignment</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Data</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr *ngFor="let report of visibleReports" class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-semibold text-gray-900">{{ report.productName }}</div>
+                                    <div class="text-xs text-gray-500 mt-0.5">ID: {{ report.productId }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-600 max-w-[150px] truncate" title="{{ report.excelAssignment?.fileName }}">{{ report.excelAssignment?.fileName }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-600">{{ report.createdAt | date:'mediumDate' }}</div>
+                                    <div class="text-xs text-gray-400">{{ report.createdAt | date:'shortTime' }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ report.imagesCollected }} Images <span class="text-xs text-gray-400">({{ report.imageQuality }})</span></div>
+                                    <div class="text-xs text-brand-600 font-medium mt-0.5" *ngIf="report.videoCollected">+ Video Footage</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+                                    [ngClass]="{
+                                        'bg-yellow-100 text-yellow-800': report.approvalStatus === 'Pending',
+                                        'bg-green-100 text-green-800': report.approvalStatus === 'Approved',
+                                        'bg-red-100 text-red-800': report.approvalStatus === 'Rejected'
+                                    }">
+                                    {{ report.approvalStatus }}
+                                    </span>
+                                    <div *ngIf="report.approvalStatus === 'Rejected' && report.rejectionReason" class="mt-2 text-xs text-red-600 bg-red-50 p-2 rounded border border-red-100">
+                                        <strong>Note:</strong> {{ report.rejectionReason }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div *ngIf="report.approvalStatus !== 'Approved'; else locked" class="flex justify-end gap-3">
+                                        <button (click)="editReport(report); isReportFormOpen = true" class="text-brand-600 hover:text-brand-900 transition-colors">Edit</button>
+                                        <button (click)="deleteReport(report.id)" class="text-red-600 hover:text-red-900 transition-colors">Delete</button>
+                                    </div>
+                                    <ng-template #locked>
+                                        <span class="text-gray-400 text-xs italic">Locked</span>
+                                    </ng-template>
+                                </td>
+                            </tr>
+                            <tr *ngIf="visibleReports.length === 0">
+                                <td colspan="6" class="px-6 py-12 text-center text-gray-400">
+                                    <p>No report found{{ selectedDate ? ' for this date' : '' }}.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+@InternExcelTracker.Api_HostAddress = http://localhost:5282
+
+GET {{InternExcelTracker.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

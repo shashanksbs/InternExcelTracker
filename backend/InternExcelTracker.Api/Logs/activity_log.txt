@@ -1,0 +1,93 @@
+2026-02-13 11:51:39 - Role mismatch login attempt for: admin1
+2026-02-13 11:51:46 - Failed login attempt for: admin1
+2026-02-13 11:51:52 - User logged in: admin1
+2026-02-13 11:53:08 - User logged in: intern1
+2026-02-13 11:55:31 - User logged in: admin1
+2026-02-13 11:58:11 - User logged in: intern1
+2026-02-13 12:05:45 - User logged in: intern1
+2026-02-13 12:06:14 - Assignment 1 marked as completed.
+2026-02-13 12:06:26 - User logged in: admin1
+2026-02-13 12:06:42 - Admin rejected report ID: 3
+2026-02-13 12:06:52 - User logged in: intern1
+2026-02-13 12:07:00 - Intern intern1 edited report ID: 3
+2026-02-13 12:07:08 - User logged in: admin1
+2026-02-14 09:57:19 - User logged in: admin1
+2026-02-14 10:00:31 - User logged in: admin1
+2026-02-14 10:00:36 - Role mismatch login attempt for: admin1
+2026-02-14 10:00:40 - User logged in: admin1
+2026-02-14 10:01:11 - User logged in: admin1
+2026-02-14 10:04:05 - User logged in: admin1
+2026-02-14 10:04:14 - User logged in: admin1
+2026-02-14 10:09:24 - User logged in: admin1
+2026-02-14 10:11:50 - User logged in: admin1
+2026-02-14 10:12:10 - Admin assigned 5e860907-8812-4337-98e2-eff269eb05ea_Book (1).xlsx to intern1
+2026-02-14 10:15:42 - Admin rejected report ID: 3
+2026-02-14 10:24:22 - Admin assigned bc4ca3ce-eb72-4a1b-b5d1-6c8a7f6ae4d7_Book (1).xlsx to intern1
+2026-02-14 10:26:30 - User logged in: intern1
+2026-02-14 10:33:27 - Assignment 2 marked as completed.
+2026-02-14 10:33:30 - Assignment 3 marked as completed.
+2026-02-14 10:33:33 - Assignment 4 marked as completed.
+2026-02-14 10:33:36 - Assignment 5 marked as completed.
+2026-02-14 10:39:45 - User logged in: intern1
+2026-02-14 10:46:39 - Failed login attempt for: intern3
+2026-02-14 10:46:44 - User logged in: intern1
+2026-02-14 10:48:56 - Role mismatch login attempt for: admin1
+2026-02-14 10:49:00 - User logged in: admin1
+2026-02-14 10:55:04 - User logged in: admin1
+2026-02-14 10:55:44 - User logged in: intern1
+2026-02-14 11:00:14 - Failed login attempt for: intern3
+2026-02-14 11:00:18 - User logged in: intern1
+2026-02-14 11:05:00 - User logged in: intern1
+2026-02-14 11:13:33 - Role mismatch login attempt for: admin1
+2026-02-14 11:13:39 - User logged in: admin1
+2026-02-14 11:13:56 - Admin assigned 9c1f9f64-c39c-41b0-98f5-f312a9506b76_2000_real_products.xlsx to intern1
+2026-02-14 11:14:07 - User logged in: intern1
+2026-02-14 11:16:38 - Assignment 6 marked as completed.
+2026-02-14 11:16:49 - User logged in: intern1
+2026-02-14 11:28:53 - Role mismatch login attempt for: admin1
+2026-02-14 11:28:56 - User logged in: admin1
+2026-02-14 11:29:14 - User logged in: intern1
+2026-02-14 11:29:47 - Failed login attempt for: intern3
+2026-02-14 11:29:50 - User logged in: intern1
+2026-02-14 17:05:53 - User logged in: admin1
+2026-02-14 17:07:26 - User logged in: intern1
+2026-02-14 17:09:59 - Intern intern1 submitted report for product light8298
+2026-02-14 17:14:37 - Role mismatch login attempt for: admin1
+2026-02-14 17:14:41 - User logged in: admin1
+2026-02-14 17:21:45 - Admin rejected report ID: 4
+2026-02-14 17:21:56 - User logged in: intern1
+2026-02-14 17:45:50 - User logged in: admin1
+2026-02-14 17:46:49 - User logged in: intern1
+2026-02-14 17:47:18 - Intern intern1 submitted report for product wireless mouse
+2026-02-14 17:47:28 - User logged in: admin1
+2026-02-14 18:41:48 - Admin rejected report ID: 5. Reason: name should conatian only letters 
+2026-02-14 18:41:57 - User logged in: intern1
+2026-02-14 19:11:41 - Intern intern1 submitted report for product mouse (ID: 3)
+2026-02-14 19:13:13 - Intern deleted report ID: 3
+2026-02-14 19:13:16 - Intern deleted report ID: 4
+2026-02-14 19:13:19 - Intern deleted report ID: 5
+2026-02-14 19:13:23 - Intern deleted report ID: 6
+2026-02-14 19:24:38 - Intern intern1 submitted report for product mouse (ID: 1)
+2026-02-14 19:25:54 - Intern intern1 submitted report for product keyboard (ID: 2)
+2026-02-14 19:27:02 - Intern intern1 submitted report for product pen (ID: 3)
+2026-02-14 19:32:44 - Intern intern1 submitted report for product pencile (ID: 4)
+2026-02-14 19:33:14 - User logged in: admin1
+2026-02-14 21:10:12 - Admin assigned 07d13f2e-cffd-4c38-a2a6-b0d167d84a51_196eb774-7915-4022-80bc-f449e259bb01_Book.xlsx to intern1
+2026-02-14 21:10:49 - User registered: intern2 (Intern)
+2026-02-14 21:10:56 - User logged in: intern2
+2026-02-14 21:11:17 - User logged in: admin1
+2026-02-14 21:11:44 - Admin assigned cdcb8582-08e3-40c9-8b31-c754482a576d_196eb774-7915-4022-80bc-f449e259bb01_Book.xlsx to intern2
+2026-02-14 21:12:00 - User logged in: intern2
+2026-02-14 21:12:59 - Intern intern2 submitted report for product mouse (ID: 1)
+2026-02-14 21:13:29 - Intern intern2 edited report ID: 11
+2026-02-14 21:13:47 - Assignment 8 marked as completed.
+2026-02-14 21:14:00 - Role mismatch login attempt for: admin1
+2026-02-14 21:14:05 - User logged in: admin1
+2026-02-14 21:14:45 - Admin approved report ID: 11
+2026-02-14 21:14:52 - Failed login attempt for: intern3
+2026-02-14 21:14:58 - User logged in: intern2
+2026-02-14 21:15:30 - Intern intern2 submitted report for product keypad (ID: 2)
+2026-02-14 21:15:45 - Role mismatch login attempt for: admin1
+2026-02-14 21:15:55 - User logged in: intern2
+2026-02-14 21:16:30 - User logged in: admin1
+2026-02-14 21:17:00 - Admin rejected report ID: 12. Reason: product nam eneeds to be long

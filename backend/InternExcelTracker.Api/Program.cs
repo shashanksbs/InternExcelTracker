@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
+// --------------------
+// Add Services
+// --------------------
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -13,7 +16,11 @@ builder.Services.AddScoped<
     InternExcelTracker.Api.Services.ILoggerService,
     InternExcelTracker.Api.Services.FileLoggerService>();
 
-// Database (Render uses DATABASE_URL)
+// --------------------
+// Database Configuration
+// --------------------
+
+// Render provides DATABASE_URL
 var connectionString =
     Environment.GetEnvironmentVariable("DATABASE_URL")
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
@@ -21,34 +28,45 @@ var connectionString =
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// ✅ FIXED CORS FOR VERCEL FRONTEND
+// --------------------
+// CORS Configuration (Vercel Frontend)
+// --------------------
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
         policy =>
         {
-            policy.WithOrigins("https://intern-excel-tracker.vercel.app")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+            policy
+                .WithOrigins("https://intern-excel-tracker.vercel.app")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
         });
 });
 
 var app = builder.Build();
 
-// Swagger only in development
+// --------------------
+// Middleware Pipeline
+// --------------------
+
+// Swagger only in Development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// ✅ ORDER MATTERS
+// Order matters
 app.UseCors("AllowAngularApp");
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-// Required for Render
+// --------------------
+// Render Port Binding
+// --------------------
+
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 app.Run($"http://0.0.0.0:{port}");

@@ -29,7 +29,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 // --------------------
-// CORS Configuration (Vercel Frontend)
+// CORS Configuration
 // --------------------
 
 builder.Services.AddCors(options =>
@@ -38,7 +38,9 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("https://intern-excel-tracker.vercel.app")
+                .SetIsOriginAllowed(origin =>
+                    origin.StartsWith("https://intern-excel-tracker") ||   // All Vercel deployments
+                    origin.StartsWith("http://localhost"))               // Local dev
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -57,7 +59,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Order matters
+// IMPORTANT: CORS must come before Authorization
 app.UseCors("AllowAngularApp");
 
 app.UseAuthorization();

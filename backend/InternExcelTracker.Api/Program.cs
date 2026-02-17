@@ -11,6 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Register ConsoleLoggerService for Render/Production
+builder.Services.AddScoped<InternExcelTracker.Api.Services.ILoggerService, InternExcelTracker.Api.Services.ConsoleLoggerService>();
+
 // ❌ TEMPORARILY DISABLED FILE LOGGER (can cause 500 on Render)
 // builder.Services.AddScoped<
 //     InternExcelTracker.Api.Services.ILoggerService,

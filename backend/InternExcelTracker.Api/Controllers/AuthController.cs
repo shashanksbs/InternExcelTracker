@@ -29,13 +29,15 @@ namespace InternExcelTracker.Api.Controllers
             if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
                 return BadRequest(new { Message = "Username or Email already exists." });
 
-            var user = new User
-            {
-                Username = dto.Username,
-                Email = dto.Email,
-                Role = dto.Role,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
-            };
+           var user = new User
+{
+    Username = dto.Username,
+    Email = dto.Email,
+    Role = dto.Role,
+    PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+    CreatedAt = DateTime.UtcNow   // 🔥 ADD THIS
+};
+
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

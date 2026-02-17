@@ -11,16 +11,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Logger Service
 builder.Services.AddScoped<
     InternExcelTracker.Api.Services.ILoggerService,
     InternExcelTracker.Api.Services.FileLoggerService>();
 
 // --------------------
-// Database Configuration
+// Database
 // --------------------
 
-// Render provides DATABASE_URL
 var connectionString =
     Environment.GetEnvironmentVariable("DATABASE_URL")
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
@@ -29,7 +27,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 // --------------------
-// CORS Configuration
+// CORS
 // --------------------
 
 builder.Services.AddCors(options =>
@@ -38,9 +36,7 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .SetIsOriginAllowed(origin =>
-                    origin.StartsWith("https://intern-excel-tracker") ||   // All Vercel deployments
-                    origin.StartsWith("http://localhost"))               // Local dev
+                .WithOrigins("https://intern-excel-tracker.vercel.app")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -49,17 +45,12 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // --------------------
-// Middleware Pipeline
+// Enable Swagger ALWAYS (for now)
 // --------------------
 
-// Swagger only in Development
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
-// IMPORTANT: CORS must come before Authorization
 app.UseCors("AllowAngularApp");
 
 app.UseAuthorization();
@@ -67,7 +58,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // --------------------
-// Render Port Binding
+// Port for Render
 // --------------------
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";

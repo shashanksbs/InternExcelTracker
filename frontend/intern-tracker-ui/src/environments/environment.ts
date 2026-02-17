@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  apiUrl: 'https://intern-tracker-api.onrender.com/api'
+  production: false,
+  apiUrl: 'http://localhost:5282/api'  // Your local .NET API
 };

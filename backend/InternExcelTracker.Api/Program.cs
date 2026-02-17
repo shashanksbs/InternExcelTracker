@@ -11,12 +11,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<
-    InternExcelTracker.Api.Services.ILoggerService,
-    InternExcelTracker.Api.Services.FileLoggerService>();
+// ❌ TEMPORARILY DISABLED FILE LOGGER (can cause 500 on Render)
+// builder.Services.AddScoped<
+//     InternExcelTracker.Api.Services.ILoggerService,
+//     InternExcelTracker.Api.Services.FileLoggerService>();
 
 // --------------------
-// Database
+// Database Configuration
 // --------------------
 
 var connectionString =
@@ -27,7 +28,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 // --------------------
-// CORS
+// CORS Configuration
 // --------------------
 
 builder.Services.AddCors(options =>
@@ -45,9 +46,10 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // --------------------
-// Enable Swagger ALWAYS (for now)
+// Middleware Pipeline
 // --------------------
 
+// Enable Swagger (for debugging)
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -58,7 +60,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // --------------------
-// Port for Render
+// Render Port Binding
 // --------------------
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";

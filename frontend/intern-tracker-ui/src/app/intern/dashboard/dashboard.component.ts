@@ -197,4 +197,10 @@ export class InternDashboardComponent implements OnInit {
   logout() {
     this.authService.logout();
   }
+
+  isSidebarOpen = false;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 }

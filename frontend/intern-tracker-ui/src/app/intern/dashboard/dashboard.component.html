@@ -1,9 +1,14 @@
 <div class="flex h-screen bg-gray-50 font-sans text-gray-900">
+  <!-- Mobile Overlay -->
+  <div *ngIf="isSidebarOpen" (click)="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 md:hidden transition-opacity"></div>
+
   <!-- Sidebar -->
-  <!-- Sidebar -->
-  <aside class="hidden md:flex flex-col w-56 bg-slate-900 text-white shadow-xl transition-all duration-300">
-    <div class="flex items-center justify-center h-16 border-b border-slate-800 bg-slate-950">
+  <aside [class.translate-x-0]="isSidebarOpen" [class.-translate-x-full]="!isSidebarOpen" class="fixed md:static inset-y-0 left-0 z-30 w-64 md:w-56 bg-slate-900 text-white transition-transform duration-300 transform md:translate-x-0 shadow-xl flex flex-col">
+    <div class="flex items-center justify-center h-16 border-b border-slate-800 bg-slate-950 relative">
       <img src="assets/logo.png" alt="Logo" class="h-10 max-w-[180px] object-contain opacity-90 hover:opacity-100 transition-opacity">
+      <button (click)="toggleSidebar()" class="md:hidden absolute right-2 text-slate-400 hover:text-white">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
     </div>
     <nav class="flex-1 overflow-y-auto py-4">
       <ul class="space-y-1 px-3">
@@ -26,7 +31,12 @@
   <!-- Main Content -->
   <div class="flex-1 flex flex-col overflow-hidden">
     <!-- Header -->
-    <header class="bg-white shadow-sm h-16 flex items-center justify-end px-6 border-b border-gray-200">
+    <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6 border-b border-gray-200">
+      <div class="flex items-center gap-4 md:hidden">
+        <button (click)="toggleSidebar()" class="p-2 -ml-2 text-gray-600 hover:text-gray-900 focus:outline-none focus:bg-gray-100 rounded-md">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
       <div class="flex items-center gap-3">
         <span class="text-sm text-gray-600">Logged in as <span class="font-semibold text-gray-800">{{ user?.username }}</span></span>
         <div class="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-brand-600/20">

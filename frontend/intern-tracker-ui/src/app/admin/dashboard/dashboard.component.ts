@@ -154,6 +154,12 @@ export class AdminDashboardComponent implements OnInit {
   rejectingReportId: number | null = null;
   rejectionReason: string = '';
 
+  isSidebarOpen = false;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
   initiateReject(reportId: number) {
     this.rejectingReportId = reportId;
     this.rejectionReason = '';
